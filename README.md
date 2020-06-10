@@ -1,1 +1,1 @@
-# dev-ops_challenge
+cd overlays && kustomize build . > output.yaml
