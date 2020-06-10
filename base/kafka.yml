@@ -1,0 +1,71 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kafkaBroker1
+  labels:
+    app: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+        - name: kafkaBroker
+          imagePullPolicy: Always
+          image: kafka:cloudera-2.1.0
+          args: ["start", "broker"]
+          volumeMounts:
+            - name: kafkaBroker1
+              mountPath: "/kafka/kafka-logs"
+            - name: jaas-config
+              mountPath: "/opt/jaas-config"
+          env:
+            - name: BROKER_ID
+              value: "0"
+      volumes:
+        - name: kafkaBroker1
+          emptyDir: {}
+        - name: jaas-config
+          configMap:
+            name: jaas-config
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kafkaBroker2
+  labels:
+    app: kafka2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka2
+  template:
+    metadata:
+      labels:
+        app: kafka2
+    spec:
+      containers:
+        - name: broker
+          imagePullPolicy: Always
+          image: kafka:cloudera-2.1.0
+          args: ["start", "broker"]
+          volumeMounts:
+            - name: kafkaBroker2
+              mountPath: "/kafka/kafka-logs"
+            - name: jaas-config
+              mountPath: "/opt/jaas-config"
+          env:
+            - name: BROKER_ID
+              value: "1"
+      volumes:
+        - name: kafkaBroker2
+          emptyDir: {}
+        - name: jaas-config
+          configMap:
+            name: jaas-config

@@ -1,0 +1,25 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kafkaBroker1
+spec:
+  template:
+    spec:
+      volumes:
+        - name: kafkaBroker1
+          emptyDir: null
+          persistentVolumeClaim:
+            claimName: kafkaBroker1
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kafkaBroker1
+spec:
+  template:
+    spec:
+      volumes:
+        - name: kafkaBroker1
+          emptyDir: null
+          persistentVolumeClaim:
+            claimName: kafkaBroker1
